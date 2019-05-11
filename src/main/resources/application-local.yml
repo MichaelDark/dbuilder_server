@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/dbuilder
+    username: template
+    password: template
+    driverClassName: org.postgresql.Driver
+    maximumPoolSize: 10
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    show-sql: false
+    hibernate.ddl-auto: update
+
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
+
+application:
+  api.version.prefix: /
+  security:
+    password:
+      sault1: y2R1D7gk5x10PadS4EfX
+      sault2: CuvPf2xQ9B5DPS05uqPP
+    jwt:
+      tokenExpirationMinutes: 1440
+      tokenIssuer: http://localhost:8086/
+      tokenSigningKey: asdf354kvkjd09567lkjasdf723jdlijr
+swagger:
+  apiTitle: Board Service
+  apiDescription: Board Service API
+  groupName: board
+  securedPaths:
+  - /url
+  - /url/**
