@@ -33,13 +33,13 @@ public class Building {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "building")
     @JsonIgnore
     private List<BuildingTask> buildingTasks = new ArrayList<>();
@@ -56,8 +56,10 @@ public class Building {
         Building object = new Building();
         object.setName(request.getName());
         object.setDescription(request.getDescription());
+        object.setCompany(company);
         return object;
     }
 
 }
+
 

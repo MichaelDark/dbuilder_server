@@ -27,12 +27,12 @@ public class NumberValue {
     @Column(name = "name")
     private Double value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "building_task_id")
     @JsonIgnore
     private BuildingTask buildingTask;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "number_criteria_id")
     @JsonIgnore
     private NumberCriteria numberCriteria;

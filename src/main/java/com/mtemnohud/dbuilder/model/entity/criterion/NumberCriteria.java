@@ -38,7 +38,7 @@ public class NumberCriteria {
     private Double maxValue;
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "numberCriteria")
     @JsonIgnore
     private List<NumberValue> numberValues = new ArrayList<>();

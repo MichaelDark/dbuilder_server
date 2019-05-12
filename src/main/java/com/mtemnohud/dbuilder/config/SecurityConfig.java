@@ -76,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/url/*").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/registration").permitAll()
+                .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/password").permitAll()
                 .antMatchers(HttpMethod.POST, "/measurement").permitAll()
                 .antMatchers(HttpMethod.GET, "/measurement/template").permitAll()
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private TokenAuthenticationFilter restTokenAuthenticationFilter() throws Exception {
         PathRequestMatcher matcher = new PathRequestMatcher(TOKEN_BASED_AUTH_ENTRY_POINT,
-                Arrays.asList("/user/registration", "/user/password", "/measurement", "/measurement/template", "/dbuilder", "/dbuilder/api"));
+                Arrays.asList("/register", "/user/password", "/dbuilder", "/dbuilder/api"));
         TokenAuthenticationFilter filter = new TokenAuthenticationFilter(matcher, webAuthenticationUnsuccessfulHandler());
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;

@@ -27,7 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
-
+    @CrossOrigin
     @ApiOperation(value = "Login a user.", response = TokenDTO.class, produces = "application/json")
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -36,6 +36,7 @@ public class UserController {
         return null;
     }
 
+    @CrossOrigin
     @ApiOperation(value = "Create user profile", response = UserResponse.class, produces = "application/json")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -44,6 +45,16 @@ public class UserController {
         return userService.createUser(request);
     }
 
+    @CrossOrigin
+    @ApiOperation(value = "Create user profile for company", response = UserResponse.class, produces = "application/json", authorizations = @Authorization("Authorization"))
+    @RequestMapping(value = "/register/company", method = RequestMethod.POST)
+    @ResponseBody
+    public UserResponse addCompanyUser(@ApiParam(value = "User profile data JSON", required = true) @RequestBody CreateUserRequest request) {
+        log.trace("[UsersController] [POST] username={}.", request.getUsername());
+        return userService.createCompanyUser(request);
+    }
+
+    @CrossOrigin
     @ApiOperation(value = "Get user info", response = UserResponse.class, produces = "application/json", authorizations = @Authorization("Authorization"))
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     @ResponseBody

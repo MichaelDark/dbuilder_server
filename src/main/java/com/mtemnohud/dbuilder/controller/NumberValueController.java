@@ -25,6 +25,7 @@ public class NumberValueController {
         this.numberValueService = numberValueService;
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Create numberValue",
             response = NumberValue.class,
@@ -36,6 +37,7 @@ public class NumberValueController {
         return numberValueService.createNumberValue(request);
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Delete numberValue",
             response = StatusResponse.class,
@@ -47,6 +49,7 @@ public class NumberValueController {
         return numberValueService.deleteNumberValue(Long.valueOf(numberValueId));
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Get all numberValues",
             response = NumberValue.class,

@@ -42,13 +42,13 @@ public class UserEntity {
     @Column(name = "is_company_owner")
     private Boolean isCompanyOwner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "user")
     @JsonIgnore
     private List<BuildingTask> buildingTasks = new ArrayList<>();

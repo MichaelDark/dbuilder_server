@@ -13,10 +13,12 @@ import com.mtemnohud.dbuilder.service.impl.secured.BaseSecuredService;
 import com.mtemnohud.dbuilder.component.Validator;
 import com.mtemnohud.dbuilder.model.request.CreateCompanyRequest;
 import com.mtemnohud.dbuilder.model.response.StatusResponse;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,14 +60,38 @@ public class CompanyService extends BaseSecuredService {
             throw new BadRequestException("User has no owned company");
         }
 
-        companyRepo.deleteById(user.getCompany().getId());
+        Company company = user.getCompany();
+        for (UserEntity userEntity : company.getUsers()) {
+            userEntity.setCompany(null);
+            repository.save(userEntity);
+        }
+        company.setUsers(new ArrayList<>());
+
+        companyRepo.save(company);
+        companyRepo.deleteById(company.getId());
 
         return StatusResponse.success();
     }
 
     public Company getCompany() {
+        if (getUserEntity() == null) {
+            throw new BadRequestException("Unauthorized");
+        }
+        if (getUserEntity().getCompany() == null) {
+            throw new BadRequestException("User has no owned company");
+        }
+
         return getUserEntity().getCompany();
     }
 
+    public List<UserEntity> getUsers() {
+        UserEntity user = getUserEntity();
+
+        if (user.getCompany() == null) {
+            throw new BadRequestException("User has no owned company");
+        }
+
+        return user.getCompany().getUsers();
+    }
 }
 

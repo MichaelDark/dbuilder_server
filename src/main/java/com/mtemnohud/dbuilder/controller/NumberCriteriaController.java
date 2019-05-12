@@ -28,6 +28,7 @@ public class NumberCriteriaController {
         this.numberCriteriaService = numberCriteriaService;
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Create numberCriteria",
             response = NumberCriteria.class,
@@ -39,6 +40,7 @@ public class NumberCriteriaController {
         return numberCriteriaService.createNumberCriteria(request);
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Delete numberCriteria",
             response = StatusResponse.class,
@@ -50,6 +52,7 @@ public class NumberCriteriaController {
         return numberCriteriaService.deleteNumberCriteria(Long.valueOf(numberCriteriaId));
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Get all numberCriterias",
             response = NumberCriteria.class,

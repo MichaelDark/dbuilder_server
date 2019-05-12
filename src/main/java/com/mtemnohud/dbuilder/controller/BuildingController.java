@@ -1,6 +1,7 @@
 package com.mtemnohud.dbuilder.controller;
 
 import com.mtemnohud.dbuilder.model.entity.Building;
+import com.mtemnohud.dbuilder.model.entity.BuildingResponse;
 import com.mtemnohud.dbuilder.model.entity.BuildingTask;
 import com.mtemnohud.dbuilder.model.entity.Company;
 import com.mtemnohud.dbuilder.model.entity.criterion.NumberCriteria;
@@ -34,17 +35,19 @@ public class BuildingController {
         this.buildingService = buildingService;
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Create building",
-            response = Building.class,
+            response = BuildingResponse.class,
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
     @RequestMapping(value = "/building/create", method = RequestMethod.POST)
     @ResponseBody
-    public Building createBuilding(@RequestBody CreateBuildingRequest request) {
+    public BuildingResponse createBuilding(@RequestBody CreateBuildingRequest request) {
         return buildingService.createBuilding(request);
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Delete building",
             response = StatusResponse.class,
@@ -56,15 +59,16 @@ public class BuildingController {
         return buildingService.deleteBuilding(Long.valueOf(buildingId));
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Get all buildings",
-            response = Building.class,
+            response = BuildingResponse.class,
             responseContainer = "List",
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/building/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/buildings", method = RequestMethod.GET)
     @ResponseBody
-    public List<Building> getAllBuildings() {
+    public List<BuildingResponse> getAllBuildings() {
         return buildingService.getAll();
     }
 

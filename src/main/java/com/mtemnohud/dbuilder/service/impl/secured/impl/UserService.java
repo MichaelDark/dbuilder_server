@@ -90,6 +90,22 @@ public class UserService extends BaseSecuredService {
         return buildUserResponse(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserResponse createCompanyUser(@NonNull CreateUserRequest request) {
+        if (getUserEntity().getIsCompanyOwner() == null || !getUserEntity().getIsCompanyOwner()) {
+            throw new BadRequestException("User is not company owner.");
+        }
+        if (getUserEntity().getCompany() == null) {
+            throw new BadRequestException("User has no company.");
+        }
+
+        UserResponse userResponse = createUser(request);
+        UserEntity user = repository.findFirstById(userResponse.getId());
+        user.setCompany(getUserEntity().getCompany());
+
+        return buildUserResponse(user);
+    }
+
 
     public UserResponse getUser(@NonNull String username) {
         validator.boolValidate(StringUtils.isEmpty(username), Messages.USERNAME_SHOULD_BE_PROVIDED);
@@ -103,7 +119,7 @@ public class UserService extends BaseSecuredService {
         List<UserEntity> userList = getUserList();
         Comparator<UserEntity> comparator = Comparator.comparing(UserEntity::getId);
         userList.sort(comparator.reversed());
-        return userList.stream().map(UserService::buildUserResponse).collect(Collectors.toList());
+        return userList.stream().map(UserService::buildUserResponse).distinct().collect(Collectors.toList());
     }
 
     public UserEntity getUserInfo() {

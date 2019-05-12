@@ -5,6 +5,7 @@ import com.mtemnohud.dbuilder.model.entity.Company;
 import com.mtemnohud.dbuilder.model.request.CreateBuildingRequest;
 import com.mtemnohud.dbuilder.model.request.CreateCompanyRequest;
 import com.mtemnohud.dbuilder.model.response.StatusResponse;
+import com.mtemnohud.dbuilder.model.user.UserEntity;
 import com.mtemnohud.dbuilder.service.impl.secured.impl.BuildingService;
 import com.mtemnohud.dbuilder.service.impl.secured.impl.CompanyService;
 import io.swagger.annotations.Api;
@@ -28,6 +29,7 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Create company",
             response = Company.class,
@@ -39,6 +41,7 @@ public class CompanyController {
         return companyService.createCompany(request);
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Delete company",
             response = StatusResponse.class,
@@ -50,6 +53,19 @@ public class CompanyController {
         return companyService.deleteCompany();
     }
 
+    @CrossOrigin
+    @ApiOperation(
+            value = "Get company users",
+            response = StatusResponse.class,
+            produces = "application/json",
+            authorizations = @Authorization("Authorization"))
+    @RequestMapping(value = "/company/users", method = RequestMethod.GET)
+    @ResponseBody
+    public List<UserEntity> getUsers() {
+        return companyService.getUsers();
+    }
+
+    @CrossOrigin
     @ApiOperation(
             value = "Get owned company",
             response = Company.class,

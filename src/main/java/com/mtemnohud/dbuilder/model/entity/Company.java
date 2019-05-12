@@ -33,13 +33,13 @@ public class Company {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "company")
     @JsonIgnore
     private List<UserEntity> users = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "company")
     @JsonIgnore
     private List<Building> buildings = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.mtemnohud.dbuilder.controller;
 
 import com.mtemnohud.dbuilder.model.entity.BuildingTask;
+import com.mtemnohud.dbuilder.model.entity.BuildingTaskResponse;
 import com.mtemnohud.dbuilder.model.request.CreateBuildingTaskRequest;
 import com.mtemnohud.dbuilder.model.response.StatusResponse;
 import com.mtemnohud.dbuilder.service.impl.secured.impl.BuildingTaskService;
@@ -25,17 +26,19 @@ public class BuildingTaskController {
         this.buildingTaskService = buildingTaskService;
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Create buildingTask",
             response = BuildingTask.class,
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/buildingTask/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/buildingTask/create/{buildingId}", method = RequestMethod.POST)
     @ResponseBody
-    public BuildingTask createBuildingTask(@RequestBody CreateBuildingTaskRequest request) {
-        return buildingTaskService.createBuildingTask(request);
+    public BuildingTaskResponse createBuildingTask(@PathVariable String buildingId, @RequestBody CreateBuildingTaskRequest request) {
+        return buildingTaskService.createBuildingTask(Long.valueOf(buildingId), request);
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Delete buildingTask",
             response = StatusResponse.class,
@@ -47,16 +50,17 @@ public class BuildingTaskController {
         return buildingTaskService.deleteBuildingTask(Long.valueOf(buildingTaskId));
     }
 
+    @CrossOrigin
     @ApiOperation(
             value = "Get all buildingTasks",
             response = BuildingTask.class,
             responseContainer = "List",
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/buildingTask/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/buildingTasks/{buildingId}", method = RequestMethod.GET)
     @ResponseBody
-    public List<BuildingTask> getAllBuildingTasks() {
-        return buildingTaskService.getAll();
+    public List<BuildingTaskResponse> getAllBuildingTasks(@PathVariable String buildingId) {
+        return buildingTaskService.getAll(Long.valueOf(buildingId));
     }
 
 }
