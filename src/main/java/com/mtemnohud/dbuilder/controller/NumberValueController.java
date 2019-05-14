@@ -31,10 +31,23 @@ public class NumberValueController {
             response = NumberValue.class,
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/numberValue/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/values/number", method = RequestMethod.POST)
     @ResponseBody
     public NumberValue createNumberValue(@RequestBody CreateNumberValueRequest request) {
         return numberValueService.createNumberValue(request);
+    }
+
+    @CrossOrigin
+    @ApiOperation(
+            value = "Get all numberValues by task id",
+            response = NumberValue.class,
+            responseContainer = "List",
+            produces = "application/json",
+            authorizations = @Authorization("Authorization"))
+    @RequestMapping(value = "/values/number/{buildingTaskId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<NumberValue> getNumberValuesByBuilding(@PathVariable String buildingTaskId) {
+        return numberValueService.getByBuildingTask(Long.valueOf(buildingTaskId));
     }
 
     @CrossOrigin
@@ -43,7 +56,7 @@ public class NumberValueController {
             response = StatusResponse.class,
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/numberValue/delete/{numberValueId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/values/number/{numberValueId}", method = RequestMethod.DELETE)
     @ResponseBody
     public StatusResponse deleteNumberValue(@PathVariable("numberValueId") String numberValueId) {
         return numberValueService.deleteNumberValue(Long.valueOf(numberValueId));
@@ -51,15 +64,14 @@ public class NumberValueController {
 
     @CrossOrigin
     @ApiOperation(
-            value = "Get all numberValues",
-            response = NumberValue.class,
-            responseContainer = "List",
+            value = "Delete numberValue by task id and criteria id",
+            response = StatusResponse.class,
             produces = "application/json",
             authorizations = @Authorization("Authorization"))
-    @RequestMapping(value = "/numberValue/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/values/number/{buildingTaskId}/{numberCriteriaId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public List<NumberValue> getAllNumberCriterion() {
-        return numberValueService.getAll();
+    public StatusResponse deleteNumberValueByBuilding(@PathVariable String buildingTaskId, @PathVariable String numberCriteriaId) {
+        return numberValueService.deleteNumberValueByBuilding(Long.valueOf(buildingTaskId), Long.valueOf(numberCriteriaId));
     }
 
 }

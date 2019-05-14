@@ -1,6 +1,8 @@
 package com.mtemnohud.dbuilder.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mtemnohud.dbuilder.model.entity.criterion.NumberCriteria;
+import com.mtemnohud.dbuilder.model.entity.values.NumberValue;
 import com.mtemnohud.dbuilder.model.request.CreateBuildingTaskRequest;
 import com.mtemnohud.dbuilder.model.user.UserEntity;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -48,6 +52,23 @@ public class BuildingTask {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "task_criteria_number",
+            joinColumns = {@JoinColumn(name = "building_task_id")},
+            inverseJoinColumns = {@JoinColumn(name = "number_criteria_id")})
+    @JsonIgnore
+    private List<NumberCriteria> numberCriterion = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "buildingTask")
+    @JsonIgnore
+    private List<NumberValue> numberValues = new ArrayList<>();
 
     public static BuildingTask createFromRequest(@NonNull Building building, CreateBuildingTaskRequest request) {
         BuildingTask object = new BuildingTask();

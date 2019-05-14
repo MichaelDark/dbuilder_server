@@ -27,23 +27,26 @@ public class NumberCriteriaService extends BaseSecuredService {
     }
 
     public NumberCriteria createNumberCriteria(CreateNumberCriteriaRequest request) {
-        if (request.getName() == null) {
-            throw new BadRequestException("device id can not be empty");
-        }
+        NumberCriteria criteria = NumberCriteria.createFromRequest(request);
 
-        NumberCriteria NumberCriteria = new NumberCriteria();
+        validateNumberCriteria(criteria);
 
-        return numberCriteriaRepo.save(NumberCriteria);
+        return numberCriteriaRepo.save(criteria);
     }
 
-    public NumberCriteria updateNumberCriteria(NumberCriteria updatedNumberCriteria) {
-        if (updatedNumberCriteria == null) {
-            throw new BadRequestException("invalid data");
+    private void validateNumberCriteria(NumberCriteria criteria) {
+        if (criteria.getName() == null) {
+            throw new BadRequestException("Name is null");
         }
-
-        NumberCriteria NumberCriteria = new NumberCriteria();
-
-        return numberCriteriaRepo.save(NumberCriteria);
+        if (criteria.getUnit() == null) {
+            throw new BadRequestException("Unit is null");
+        }
+        if (criteria.getMinValue() == null) {
+            throw new BadRequestException("Min value is null");
+        }
+        if (criteria.getMaxValue() == null) {
+            throw new BadRequestException("Max value is null");
+        }
     }
 
     public StatusResponse deleteNumberCriteria(Long numberCriteriaId) {
@@ -63,4 +66,5 @@ public class NumberCriteriaService extends BaseSecuredService {
     public List<NumberCriteria> getAll() {
         return Lists.newArrayList(numberCriteriaRepo.findAll());
     }
+
 }
