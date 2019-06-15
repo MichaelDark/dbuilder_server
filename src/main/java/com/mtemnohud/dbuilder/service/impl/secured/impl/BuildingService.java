@@ -2,6 +2,7 @@ package com.mtemnohud.dbuilder.service.impl.secured.impl;
 
 import com.mtemnohud.dbuilder.component.Validator;
 import com.mtemnohud.dbuilder.exception.BadRequestException;
+import com.mtemnohud.dbuilder.exception.Unauthorized;
 import com.mtemnohud.dbuilder.model.entity.Building;
 import com.mtemnohud.dbuilder.model.entity.BuildingResponse;
 import com.mtemnohud.dbuilder.model.entity.Company;
@@ -39,7 +40,7 @@ public class BuildingService extends BaseSecuredService {
             throw new BadRequestException("User is not company member");
         }
         if (user.getIsCompanyOwner() == null || !user.getIsCompanyOwner()) {
-            throw new BadRequestException("User is not company owner");
+            throw new Unauthorized("User is not company owner");
         }
 
         return new BuildingResponse(buildingRepo.save(Building.createFromRequest(user.getCompany(), request)));
@@ -54,15 +55,12 @@ public class BuildingService extends BaseSecuredService {
             throw new BadRequestException("User has no company");
         }
         if (user.getIsCompanyOwner() == null || !user.getIsCompanyOwner()) {
-            throw new BadRequestException("User is not company owner");
+            throw new Unauthorized("User is not company owner");
         }
 
         Optional<Building> buildingOptional = buildingRepo.findById(buildingId);
         if (!buildingOptional.isPresent()) {
             throw new BadRequestException("No building with such ID");
-        }
-        if (buildingOptional.get().getCompany() == null || !buildingOptional.get().getCompany().getId().equals(company.getId())) {
-            throw new BadRequestException("No building in current company");
         }
 
         Building building = buildingOptional.get();

@@ -17,6 +17,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class CompanyService extends BaseSecuredService {
         this.companyRepo = companyRepo;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public Company createCompany(CreateCompanyRequest request) {
         UserEntity user = getUserEntity();
 
@@ -53,6 +56,7 @@ public class CompanyService extends BaseSecuredService {
         return savedCompany;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public StatusResponse deleteCompany() {
         UserEntity user = getUserEntity();
 

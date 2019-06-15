@@ -2,6 +2,7 @@ package com.mtemnohud.dbuilder.security.api;
 
 
 import com.mtemnohud.dbuilder.exception.BadRequestException;
+import com.mtemnohud.dbuilder.exception.Unauthorized;
 import com.mtemnohud.dbuilder.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,14 @@ class SecurityExceptionHandler extends ResponseEntityExceptionHandler {
     public ErrorResponse handleException(BadRequestException ex, HttpServletRequest request) {
         log.error("URI={}, {}", request.getRequestURI(), ex.getMessage());
         return ErrorResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(Unauthorized.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorResponse handleException(Unauthorized ex, HttpServletRequest request) {
+        log.error("URI={}, {}", request.getRequestURI(), ex.getMessage());
+        return ErrorResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED.value(), request.getRequestURI());
     }
 
 
