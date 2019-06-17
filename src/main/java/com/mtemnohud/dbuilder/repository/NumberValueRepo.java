@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface NumberValueRepo extends CrudRepository<NumberValue, Long> {
 
+    NumberValue findFirstByBuildingTaskIdAndNumberCriteriaId(Long taskId, Long criteriaId);
+
 }

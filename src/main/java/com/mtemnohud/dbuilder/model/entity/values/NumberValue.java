@@ -3,6 +3,8 @@ package com.mtemnohud.dbuilder.model.entity.values;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mtemnohud.dbuilder.model.entity.criterion.NumberCriteria;
 import com.mtemnohud.dbuilder.model.entity.BuildingTask;
+import com.mtemnohud.dbuilder.model.request.CreateNumberCriteriaRequest;
+import com.mtemnohud.dbuilder.model.request.CreateNumberValueRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.sql.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "number_criterion")
+@Table(name = "number_value")
 public class NumberValue {
 
     @Id
@@ -34,7 +36,6 @@ public class NumberValue {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "number_criteria_id")
-    @JsonIgnore
     private NumberCriteria numberCriteria;
 
     @Column(name = "created_at")
@@ -44,5 +45,11 @@ public class NumberValue {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+    public static NumberValue createFromRequest(CreateNumberValueRequest request) {
+        NumberValue object = new NumberValue();
+        object.setValue(request.getValue());
+        return object;
+    }
 
 }
